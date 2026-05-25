@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mazingira Emergency Gateway</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; line-height: 1.6; margin: 0; padding: 20px; background-color: #f5f7fb; color: #333; }
+        .container { max-width: 1100px; margin: 0 auto; }
+        header { margin-bottom: 30px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center;}
+        .status-card { background: white; border-left: 5px solid #22c55e; padding: 15px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 25px; }
+        .status-active { color: #22c55e; font-weight: bold; }
+        .alert-banner { background-color: #dbeafe; color: #1e40af; padding: 15px; border-radius: 6px; margin-bottom: 20px; font-weight: 500; }
+        .grid { display: grid; grid-template-columns: 1fr; gap: 25px; }
+        @media (min-width: 768px) { .grid { grid-template-columns: 1fr 1fr; } }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; flex-direction: column; justify-content: space-between;}
+        h2 { margin-top: 0; color: #1e293b; border-bottom: 1px solid #edf2f7; padding-bottom: 8px; }
+        textarea, select { width: 100%; box-sizing: border-box; padding: 10px; border: 1px solid #cbd5e1; border-radius: 4px; font-family: inherit; margin-bottom: 10px; }
+        button { background-color: #2563eb; color: white; border: none; padding: 10px 15px; font-size: 14px; border-radius: 4px; cursor: pointer; font-weight: 500;}
+        button:hover { background-color: #1d4ed8; }
+        .btn-success { background-color: #16a34a; }
+        .btn-success:hover { background-color: #15803d; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; text-align: left; }
+        th, td { padding: 10px; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
+        th { background-color: #f8fafc; color: #64748b; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>🌱 Mazingira Gateway Dashboard</h1>
+        <p>Festival Prototype Mode v1.2</p>
+    </header>
+
+    {% if success_msg %}
+    <div class="alert-banner">{{ success_msg }}</div>
+    {% endif %}
+
+    <div class="status-card">
+        <p>System Diagnostics: <span class="status-active">● Active Local Gateway Link</span> (Port 5001 / Listening for Inbound Webhooks)</p>
+    </div>
+
+    <div class="grid">
+        <div class="card">
+            <div>
+                <h2>Step 1: AI Prompt Helper</h2>
+                <form method="POST" action="/generate-alert">
+                    <label for="prompt"><strong>Explain current weather constraint conditions:</strong></label>
+                    <textarea id="prompt" name="prompt" rows="3" placeholder="e.g., Alert for Nakuru area about blocked storm drains during heavy rain..." required>{{ user_prompt }}</textarea>
+                    <button type="submit">Draft SMS via Gemma Edge AI</button>
+                </form>
+            </div>
+
+            <div style="margin-top: 25px; border-top: 2px dashed #e2e8f0; padding-top: 20px;">
+                <h2>Step 2: Campaign Control Panel</h2>
+                <form method="POST" action="/send-broadcast">
+                    <label for="message_text"><strong>Review Message Text:</strong></label>
+                    <textarea id="message_text" name="message_text" rows="4" placeholder="Draft output details appear here..." required>{{ generated_text }}</textarea>
+                    
+                    <label for="target_zone"><strong>Target Broadcast Eco-Zone:</strong></label>
+                    <select id="target_zone" name="target_zone">
+                        <option value="ALL">All Monitored Regions (Global Broadcast)</option>
+                        <option value="NAKURU">Nakuru Zone Only</option>
+                        <option value="NAIROBI">Nairobi Zone Only</option>
+                        <option value="MOMBASA">Mombasa Zone Only</option>
+                    </select>
+                    <button type="submit" class="btn-success" style="width: 100%; padding: 12px; font-size: 16px;">🚀 Push Broadcast to Local Cell Towers</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card" style="justify-content: flex-start;">
+            <h2>Community Directory</h2>
+            <div style="max-height: 480px; overflow-y: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Phone Number</th>
+                            <th>Monitored Eco-Zone</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in registered_numbers %}
+                        <tr>
+                            <td><code>{{ user.phone }}</code></td>
+                            <td><span style="background: #f1f5f9; padding: 3px 8px; border-radius: 4px; font-weight: 600;">{{ user.location }}</span></td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="2" style="text-align: center; color: #94a3b8;">No registered subscribers. Send a 'JOIN <ZONE>' SMS to begin.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" style="margin-top: 25px;">
+        <h2>Past System Broadcast Logs</h2>
+        <div style="max-height: 250px; overflow-y: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Timestamp</th>
+                        <th style="width: 20%;">Target Area Code</th>
+                        <th>Dispatched Message Content String</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for broadcast in past_broadcasts %}
+                    <tr>
+                        <td><code>{{ broadcast.time }}</code></td>
+                        <td><strong>{{ broadcast.zone }}</strong></td>
+                        <td>{{ broadcast.message }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="3" style="text-align: center; color: #94a3b8;">No campaigns executed yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

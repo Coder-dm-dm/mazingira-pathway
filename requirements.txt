@@ -1,0 +1,13 @@
+# Web Framework & Interface Layout
+Flask==3.0.3
+Werkzeug==3.0.3
+
+# Hardware Gateway Core Communication HTTP Network Layer
+requests==2.32.3
+urllib3==2.2.1
+
+# Local CPU/GPU Acceleration Edge AI Engine Infrastructure
+llama-cpp-python==0.2.76
+
+# Numerical Processing Pipeline
+numpy==1.26.4
