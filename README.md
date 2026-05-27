@@ -1,6 +1,6 @@
-# Climalink: Offline-First Climate & Agricultural SMS Broadcast Gateway
+# Mazingira-Gateway Offline-First Climate & Agricultural SMS Broadcast Gateway
 
-Climalink is an offline-first, resilient communication platform designed for rural community outreach. It enables administrators to broadcast automated, AI-generated climate advice and environmental alerts directly to community members over legacy cellular networks—**even when completely disconnected from the internet**. 
+Mazingira-Gateway is an offline-first, resilient communication platform designed for rural community outreach. It enables administrators to broadcast automated, AI-generated climate advice and environmental alerts directly to community members over legacy cellular networks—**even when completely disconnected from the internet**. 
 
 By utilizing a hybrid "Dual-Mode" backend, the system seamlessly uses powerful cloud APIs when online and safely drops down to an air-gapped, highly optimized local Large Language Model (LLM) when offline, bridging the digital divide for underserved regions.
 
@@ -35,7 +35,7 @@ Before running the application, ensure your workspace meets these criteria:
 ## 📁 Repository Structure Blueprint
 
 ```text
-climalink/
+Mazingira-Gateway/
 ├── models/
 │   └── smollm2-135m-instruct-q8_0.gguf  <-- Must download manually (not on GitHub)
 ├── services/
