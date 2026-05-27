@@ -6,31 +6,51 @@ By utilizing a hybrid "Dual-Mode" backend, the system seamlessly uses powerful c
 
 ---
 
-## 🚀 Key Technical Innovations (For Judges)
+## 🚀 Key Technical Innovations & Hurdles Overcome
 
-* **Dual-Mode Inference Loop:** Automatically detects internet connectivity. Uses Google Gemini 2.5 Flash when online and gracefully falls back to a locally hosted, quantized `SmolLM2-135M` model when offline.
-* **Thread-Safe Mutex Engineering:** Implements strict Python `threading.Lock()` controls around native C++ execution structures to prevent multi-threaded Flask race conditions and runtime core dumps.
-* **Hardware Bridge Routing:** Connects directly to consumer mobile networks by tunneling data via Android Debug Bridge (ADB) to an on-device gateway (SMSGate), avoiding expensive commercial SMS API dependencies.
-* **Automated Registration Node:** Contains an inbound webhook module allowing new community members to autonomously text a keyword (`JOIN [Zone]`) to automatically register into local outreach sectors.
+### 1. Dual-Mode Inference Loop
+The core engine automatically detects internet connectivity parameters. It favors Google Gemini 2.5 Flash via the cloud when online, but gracefully drops to an entirely air-gapped, resource-optimized, local `SmolLM2-135M` GGUF model when network drops occur.
+
+### 2. Resolving Native Memory Corruption (Thread-Safety)
+During stress-testing, rapid or concurrent web requests into the underlying C++ layers of `llama-cpp-python` caused memory buffer collisions (`get_logits_ith: invalid logits id -2`), throwing fatal `GGML_ASSERT` crashes that completely brought down the Flask server. 
+* **The Fix:** We engineered a strict **Mutual Exclusion (Mutex) Lock** using Python's `threading.Lock()` to encapsulate the local inference execution loop. This forces simultaneous requests to wait safely in a linear queue, completely eliminating multi-threaded race conditions.
+
+### 3. Hardware Bridge Routing & Enrollment
+Instead of relying on expensive, proprietary commercial SMS APIs, Climalink utilizes **Android Debug Bridge (ADB)** to route data down a physical USB cable directly to a connected Android mobile device running an integrated gateway (`SMSGate`). Furthermore, an inbound webhook parser handles incoming messages containing the keyword `JOIN [Zone]`, creating a fully automated, self-service user registration database.
 
 ---
 
 ## 🛠️ Prerequisites & System Requirements
 
-Before setting up the software, ensure your environment meets the following conditions:
-* **Operating System:** Linux (Ubuntu/Debian) or Unix-based macOS.
-* **Python Version:** Python 3.10 or higher.
-* **Hardware Bridge:** Android Device with **USB Debugging Enabled** in Developer Options.
-* **Android Tools:** Android Debug Bridge (`adb`) installed on the host machine.
-    * *Linux:* `sudo apt update && sudo apt install android-tools-adb -y`
-    * *macOS:* `brew install android-platform-tools`
+Before running the application, ensure your workspace meets these criteria:
+* **Python Version:** Python 3.10 or higher installed.
+* **Hardware Bridge:** An Android device with **USB Debugging Enabled** in its Developer Settings.
+* **Android Platform Tools (ADB):** Must be installed on your system host.
+    * **Linux:** `sudo apt install android-tools-adb -y`
+    * **macOS:** `brew install android-platform-tools`
+    * **Windows:** Download the official ZIP from Android Developer Site and add its path to your System Environment Variables.
 
 ---
 
-## ⚙️ Automated Installation & Quickstart
+## 📁 Repository Structure Blueprint
 
-We have provided an automated, all-in-one bootstrapper script (`run.sh`) that provisions the environment, checks model status, sets up the phone network routing, and boots the platform.
-
-### Step 1: Clone & Navigate to Project Directory
-```bash
-cd ~/Desktop/coding-project/mazingira_gateway
+```text
+climalink/
+├── models/
+│   └── smollm2-135m-instruct-q8_0.gguf  <-- Must download manually (not on GitHub)
+├── services/
+│   ├── __init__.py
+│   ├── ai_handler.py
+│   ├── data_handler.py
+│   ├── history_handler.py
+│   └── sms_sender.py
+├── static/
+│   └── (CSS stylesheets / Logos)
+├── templates/
+│   └── index.html
+├── .gitignore
+├── app.py
+├── README.md
+├── requirements.txt
+├── run.bat                              <-- Automation script for Windows
+└── run.sh                               <-- Automation script for Linux/macOS
