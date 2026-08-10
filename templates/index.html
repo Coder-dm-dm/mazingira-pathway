@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mazingira Field Broadcast Node</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+<div class="layout-wrapper">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="brand">
+            <i class="fa-solid fa-leaf brand-icon"></i>
+            <div>
+                <h2>Mazingira</h2>
+                <p>Telecom Node v2.5</p>
+            </div>
+        </div>
+        
+        <nav class="nav-menu">
+            <a href="#ai-generator" class="nav-link active"><i class="fa-solid fa-wand-magic-sparkles"></i> AI Generator</a>
+            <a href="#broadcast" class="nav-link"><i class="fa-solid fa-tower-cell"></i> Cellular Dispatch</a>
+            <a href="#subscribers" class="nav-link"><i class="fa-solid fa-users"></i> Subscribers</a>
+            <a href="#history" class="nav-link"><i class="fa-solid fa-clock-rotate-left"></i> Transmission Logs</a>
+            <a href="#onboard" class="nav-link"><i class="fa-solid fa-user-plus"></i> Manual Registration</a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="connection-status">
+                <span class="status-dot"></span>
+                <span>ADB Bridge Active</span>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Work Area -->
+    <main class="main-content">
+        <header class="top-header">
+            <div>
+                <h1>Tactical Emergency Control Node</h1>
+                <p class="subtitle">Air-Gapped Telephony Gateway & Offline Neural Inference</p>
+            </div>
+            <div class="header-controls">
+                <span class="badge badge-offline"><i class="fa-solid fa-plug-circle-xmark"></i> Offline USB Mode</span>
+                
+                <!-- Classic Light/Dark Mode Switcher -->
+                <button type="button" id="theme_toggle_btn" class="theme-btn" title="Toggle Light/Dark Theme">
+                    <i class="fa-solid fa-sun" id="theme_icon_sun"></i>
+                    <i class="fa-solid fa-moon hidden" id="theme_icon_moon"></i>
+                </button>
+            </div>
+        </header>
+
+        {% if success_msg %}
+        <div class="alert-banner">
+            <i class="fa-solid fa-circle-check"></i> {{ success_msg }}
+        </div>
+        {% endif %}
+
+        <!-- AI Streaming Section -->
+        <section id="ai-generator" class="card">
+            <div class="card-header">
+                <h2><i class="fa-solid fa-brain"></i> Step 1: Real-Time Edge AI Stream Generator</h2>
+                <div class="header-toggles">
+                    <div class="toggle-wrapper">
+                        <span class="toggle-label"><i class="fa-solid fa-language"></i> Swahili Translation</span>
+                        <label class="switch">
+                            <input type="checkbox" id="translator_toggle" checked>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="prompt_input">Input Environmental Parameters or Weather Context</label>
+                <div class="input-with-button">
+                    <input type="text" id="prompt_input" placeholder="e.g., Heavy rainfall expected in Nakuru area tomorrow morning..." value="{{ user_prompt }}">
+                    <button type="button" id="start_stream_btn" class="btn btn-primary">
+                        <i class="fa-solid fa-bolt"></i> Generate Stream
+                    </button>
+                </div>
+            </div>
+
+            <!-- Live Neural Reasoning Thought Stream Box -->
+            <div class="thought-container">
+                <div class="stream-header">
+                    <label><i class="fa-solid fa-lightbulb"></i> Neural Reasoning Thought Stream (`Gemma-3-1B-Thinking`)</label>
+                </div>
+                <div id="thought_box" class="thought-box">
+                    <span id="thought_content">Reasoning thoughts will appear here live during execution...</span>
+                </div>
+            </div>
+
+            <!-- Live Final Output Box -->
+            <div class="stream-container">
+                <div class="stream-header">
+                    <label><i class="fa-solid fa-comment-dots"></i> Final Output Payload</label>
+                    <span id="stream_status" class="stream-status-text">Idle</span>
+                </div>
+                <div id="stream_box" class="stream-box">
+                    <span id="stream_content">Generated text output will stream here...</span><span id="cursor" class="blinking-cursor hidden">▌</span>
+                </div>
+                <div class="stream-actions">
+                    <button type="button" id="transfer_btn" class="btn btn-outline" disabled>
+                        <i class="fa-solid fa-arrow-down"></i> Use Text in Cellular Broadcast Box
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Broadcast Section -->
+        <section id="broadcast" class="card">
+            <div class="card-header">
+                <h2><i class="fa-solid fa-satellite-dish"></i> Step 2: Cellular Telephony Dispatch Control</h2>
+            </div>
+            <form method="POST" action="/send-broadcast">
+                <div class="form-group">
+                    <label for="message_text">Transmitted Message Payload (Kiswahili)</label>
+                    <textarea id="message_text" name="message_text" rows="3" placeholder="Paste or transfer generated text here..." required>{{ generated_text }}</textarea>
+                </div>
+                
+                <div class="grid-2col">
+                    <div class="form-group">
+                        <label for="target_zone">Target Eco-Zone Sector Filter</label>
+                        <select id="target_zone" name="target_zone">
+                            <option value="ALL">📢 Global Broadcast (All Monitored Regions)</option>
+                            <option value="NAKURU">Nakuru Eco-Zone</option>
+                            <option value="NAIROBI">Nairobi Eco-Zone</option>
+                            <option value="KIAMBU">Kiambu Eco-Zone</option>
+                        </select>
+                    </div>
+                    <div class="form-group btn-align-bottom">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa-solid fa-paper-plane"></i> Dispatch Air-Gapped Broadcast
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </section>
+
+        <!-- Data Directory Grid -->
+        <div class="grid-2col">
+            <!-- Active Subscribers Table -->
+            <section id="subscribers" class="card">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-address-book"></i> Active Subscribers</h2>
+                    <span class="badge">{{ registered_numbers|length }} Total</span>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Phone Number</th>
+                                <th>Eco-Zone</th>
+                                <th>Consent</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in registered_numbers %}
+                            <tr>
+                                <td><code>{{ user.phone }}</code></td>
+                                <td><span class="badge-tag">{{ user.location }}</span></td>
+                                <td><span class="badge-success">✓ Verified</span></td>
+                            </tr>
+                            {% else %}
+                            <tr><td colspan="3" class="empty-state">No subscribers registered yet.</td></tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Manual Onboard & Housekeeping -->
+            <section id="onboard" class="card">
+                <div class="card-header">
+                    <h2><i class="fa-solid fa-user-plus"></i> Field Onboarding & Cache</h2>
+                </div>
+                <form method="POST" action="/manual-onboard" class="onboard-form">
+                    <div class="form-group">
+                        <input type="text" name="phone" placeholder="Phone e.g. +254700000000" required>
+                    </div>
+                    <div class="form-group">
+                        <select name="location">
+                            <option value="KIAMBU">Kiambu Eco-Zone</option>
+                            <option value="NAKURU">Nakuru Eco-Zone</option>
+                            <option value="NAIROBI">Nairobi Eco-Zone</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="initiative_id" placeholder="Initiative ID e.g. FIELD_DELTA" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Register Resident</button>
+                </form>
+                
+                <hr class="divider">
+
+                <form method="POST" action="/clear-phone-logs">
+                    <button type="submit" class="btn btn-danger btn-block" onclick="return confirm('Wipe handset text cache?');">
+                        <i class="fa-solid fa-trash-can"></i> Clear Handset Storage Cache
+                    </button>
+                </form>
+            </section>
+        </div>
+
+        <!-- Historical Transmission Log Registry -->
+        <section id="history" class="card">
+            <div class="card-header">
+                <h2><i class="fa-solid fa-clock-rotate-left"></i> Historical Broadcast Logs</h2>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 20%;">Timestamp</th>
+                            <th style="width: 20%;">Target Zone</th>
+                            <th>Message Payload</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for broadcast in past_broadcasts %}
+                        <tr>
+                            <td><code>{{ broadcast.time }}</code></td>
+                            <td><strong>{{ broadcast.zone }}</strong></td>
+                            <td>{{ broadcast.message }}</td>
+                        </tr>
+                        {% else %}
+                        <tr><td colspan="3" class="empty-state">No broadcast campaigns executed in this session.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+</div>
+
+<!-- JavaScript Core Logic -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // ==========================================
+    // 1. LIGHT / DARK THEME TOGGLE ENGINE
+    // ==========================================
+    const themeToggleBtn = document.getElementById('theme_toggle_btn');
+    const sunIcon = document.getElementById('theme_icon_sun');
+    const moonIcon = document.getElementById('theme_icon_moon');
+
+    // Load saved theme preference (default to dark)
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcons(savedTheme);
+
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcons(newTheme);
+        });
+    }
+
+    function updateThemeIcons(theme) {
+        if (!sunIcon || !moonIcon) return;
+        if (theme === 'dark') {
+            sunIcon.classList.remove('hidden');
+            moonIcon.classList.add('hidden');
+        } else {
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+        }
+    }
+
+    // ==========================================
+    // 2. SWAHILI TRANSLATION TOGGLE HANDLER
+    // ==========================================
+    const translatorToggle = document.getElementById('translator_toggle');
+    if (translatorToggle) {
+        translatorToggle.addEventListener('change', async (e) => {
+            const isChecked = e.target.checked;
+            try {
+                await fetch('/toggle-translator', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ enabled: isChecked })
+                });
+            } catch (err) {
+                console.error('Failed to update translation toggle:', err);
+            }
+        });
+    }
+
+    // ==========================================
+    // 3. SSE STREAMING ENGINE (THOUGHTS + OUTPUT)
+    // ==========================================
+    const startStreamBtn = document.getElementById('start_stream_btn');
+    const transferBtn = document.getElementById('transfer_btn');
+    
+    if (startStreamBtn) {
+        startStreamBtn.addEventListener('click', async () => {
+            const promptInput = document.getElementById('prompt_input').value.trim();
+            if (!promptInput) {
+                alert("Please enter context parameters!");
+                return;
+            }
+
+            const streamContent = document.getElementById('stream_content');
+            const thoughtContent = document.getElementById('thought_content');
+            const cursor = document.getElementById('cursor');
+            const statusText = document.getElementById('stream_status');
+            const translateEnabled = translatorToggle ? translatorToggle.checked : true;
+
+            const thoughtBox = document.getElementById('thought_box');
+            const streamBox = document.getElementById('stream_box');
+
+            // Reset UI Containers
+            streamContent.textContent = "";
+            thoughtContent.textContent = "";
+            if (cursor) cursor.classList.remove('hidden');
+            
+            if (statusText) {
+                statusText.textContent = "Reasoning...";
+                statusText.className = "stream-status-text active";
+            }
+            
+            startStreamBtn.disabled = true;
+            if (transferBtn) transferBtn.disabled = true;
+
+            try {
+                const response = await fetch(`/stream-alert?prompt=${encodeURIComponent(promptInput)}&translate=${translateEnabled}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+
+                while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) break;
+
+                    const chunk = decoder.decode(value, { stream: true });
+                    const lines = chunk.split('\n');
+
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            const dataStr = line.replace('data: ', '').trim();
+                            if (dataStr === '[DONE]') break;
+
+                            try {
+                                const parsed = JSON.parse(dataStr);
+
+                                // Append thinking blocks live into yellow reasoning box
+                                if (parsed.thought_chunk) {
+                                    thoughtContent.textContent += parsed.thought_chunk;
+                                    if (thoughtBox) thoughtBox.scrollTop = thoughtBox.scrollHeight;
+                                }
+
+                                // Update status indicator
+                                if (parsed.status && statusText) {
+                                    statusText.textContent = parsed.status;
+                                }
+
+                                // Append final payload tokens into output box
+                                if (parsed.token) {
+                                    streamContent.textContent += parsed.token;
+                                    if (streamBox) streamBox.scrollTop = streamBox.scrollHeight;
+                                }
+                            } catch (e) {
+                                // Ignore json parse errors on incomplete chunk splits
+                            }
+                        }
+                    }
+                }
+            } catch (err) {
+                streamContent.textContent = "Error during generation stream: " + err.message;
+            } finally {
+                if (cursor) cursor.classList.add('hidden');
+                if (statusText) {
+                    statusText.textContent = "Completed";
+                    statusText.className = "stream-status-text success";
+                }
+                startStreamBtn.disabled = false;
+                if (transferBtn) transferBtn.disabled = false;
+            }
+        });
+    }
+
+    // ==========================================
+    // 4. TRANSFER TEXT TO BROADCAST BOX
+    // ==========================================
+    if (transferBtn) {
+        transferBtn.addEventListener('click', () => {
+            const streamedText = document.getElementById('stream_content').textContent;
+            const messageBox = document.getElementById('message_text');
+            const broadcastSection = document.getElementById('broadcast');
+
+            if (messageBox) {
+                messageBox.value = streamedText.trim();
+            }
+            if (broadcastSection) {
+                broadcastSection.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    }
+});
+</script>
+
+</body>
+</html>

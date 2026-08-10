@@ -1,0 +1,16 @@
+Here are those agronomic prompts for Kenyan smallholder farming scenarios. You can copy and paste any of these directly into the Step 1: Real-Time Edge AI Stream Generator box on your dashboard:
+
+1. 🌦️ Heavy Rains & Flood Alert (Disaster Mitigation)
+"Heavy rainfall over 100mm expected in Kiambu and Nakuru counties over the next 48 hours with high risks of localized flooding. Provide brief advice on protecting crops and preventing fertilizer runoff."
+
+2. 🌽 Maize Pest Management (Fall Armyworm)
+"Farmer in Trans-Nzoia reports early signs of Fall Armyworm damage on young maize plants. Provide 2 immediate organic or cost-effective management actions they should take today."
+
+3. ☀️ Prolonged Dry Spell / Drought Mitigation
+"High temperatures and zero rainfall predicted for the next 3 weeks in Kitui county. Advise smallholder farmers on soil moisture retention and mulch techniques to save their vegetables."
+
+4. 🐄 Livestock Health & Cold Weather
+"Cold weather and persistent fog expected in Nyandarua highlands this week. Give dairy farmers brief advice on preventing pneumonia in young calves."
+
+5. 🥔 Potato Late Blight Prevention
+"High humidity and overcast conditions in Meru favoring potato late blight. Advise farmers on preventive spraying and drainage tips before symptoms spread."

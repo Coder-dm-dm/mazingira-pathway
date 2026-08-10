@@ -1,0 +1,14 @@
+{
+  "force_offline": true,
+  "use_translator": false,
+  "reasoning_model_path": "models/reasoning/Gemma-3-1B-it-GLM-4.7-Flash-Thinking_Q8_0.gguf",
+  "local_model_path": "models/text-reply/gemma-3-1b-it-q4_0.gguf",
+  "translator_model_path": "models/translator/swahili-gemma-1b-q4_k_m.gguf",
+  "max_history_turns": 3,
+  "temperature": 0.3,
+  "max_tokens": 300,
+  "cloud_models": [
+    "gemma2-9b-it",
+    "llama-3.3-70b-versatile"
+  ]
+}

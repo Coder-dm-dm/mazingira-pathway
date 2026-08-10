@@ -1,0 +1,4 @@
+*.gguf
+models/
+.venv/
+apikey.txt
