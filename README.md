@@ -1,4 +1,4 @@
-# Mazingira-Gateway Offline-First Climate & Agricultural SMS Broadcast Gateway
+# CLIMALINK Offline-First Climate & Agricultural SMS Broadcast Gateway
 
 Mazingira-Gateway is an offline-first, resilient communication platform designed for rural community outreach. It enables administrators to broadcast automated, AI-generated climate advice and environmental alerts directly to community members over legacy cellular networks—**even when completely disconnected from the internet**. 
 
